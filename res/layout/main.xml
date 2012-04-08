@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <FrameLayout
+        android:id="@+id/drawingFrame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <com.tenzenway.tcm.MainView
+            android:id="@+id/myMainView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.androidplot.xy.XYPlot
+            android:id="@+id/aprHistoryPlot"
+            android:layout_width="fill_parent"
+            android:layout_height="300px"
+            android:layout_marginLeft="10px"
+            android:layout_marginRight="10px"
+            android:layout_marginTop="100px"
+            title="Time" />
+        <com.androidplot.xy.XYPlot
+            android:id="@+id/aprFrequencyPlot"
+            android:layout_width="fill_parent"
+            android:layout_height="300px"
+            android:layout_marginLeft="10px"
+            android:layout_marginRight="10px"
+            android:layout_marginTop="410px"
+            title="Frquency" />
+        </FrameLayout>
+
+    <EditText
+        android:id="@+id/editDebug"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <requestFocus />
+    </EditText>
+
+</LinearLayout>
