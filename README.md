@@ -24,5 +24,4 @@ The Official site is located at (http://tcm.tenzenway.com/).
 Contact
 -------
 
-Birdming Lai
-birdming22 at hotmail.com
+Birdming Lai (birdming22 at hotmail.com)
