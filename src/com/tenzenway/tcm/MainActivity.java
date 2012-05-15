@@ -42,7 +42,7 @@ public class MainActivity extends Activity {
 
 	private TextView _title;
 	private BluetoothAdapter _bluetoothAdapter;
-	private Spoka _spoka;
+	private SerialAdapter _serialAdapter;
 	private boolean _connectDevice = false;
 	private EditText _debug;
 	private String _inData = "";
@@ -72,8 +72,8 @@ public class MainActivity extends Activity {
 				.addJoystickListener(new JoystickListener() {
 					@Override
 					public void onMove(ColValues newColours) {
-						if (_spoka != null) {
-							final String result = _spoka.updateColours(
+						if (_serialAdapter != null) {
+							final String result = _serialAdapter.updateColours(
 									newColours.red, newColours.blue,
 									newColours.orange) ? "OK" : "NOK";
 
@@ -172,8 +172,8 @@ public class MainActivity extends Activity {
 		super.onDestroy();
 		Log.d(TAG, "++ ON DESTROY ++");
 
-		if (_spoka != null)
-			_spoka.disconnect();
+		if (_serialAdapter != null)
+			_serialAdapter.disconnect();
 	}
 	public static final double[] forwardMagnitude(double[] input) {
 		int N = input.length;
@@ -288,7 +288,7 @@ public class MainActivity extends Activity {
 				try {
 					Log.d(TAG, "address:" + address);
 
-					_spoka = new Spoka(_bluetoothAdapter, address, _handler);
+					_serialAdapter = new SerialAdapter(_bluetoothAdapter, address, _handler);
 					_connectDevice = true;
 				} catch (Exception e) {
 					Toast.makeText(this, "Can't connect to the SPOKA",

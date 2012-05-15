@@ -15,9 +15,9 @@ import android.bluetooth.BluetoothSocket;
 import android.os.Handler;
 import android.util.Log;
 
-public class Spoka {
+public class SerialAdapter {
 	// Debugging
-	private static final String TAG = "SPOKA";
+	private static final String TAG = "SERIAL_ADAPTER";
 
 	// Unique UUID for this application
 	// has to be this precise value for SERIAL port profile (SPP)
@@ -38,9 +38,9 @@ public class Spoka {
 	private StringBuffer _incomingDataStr = new StringBuffer();
 	private char _sequence = 0;
 
-	public Spoka(BluetoothAdapter bluetoothAdapter, String address,
+	public SerialAdapter(BluetoothAdapter bluetoothAdapter, String address,
 			Handler handler) throws IOException {
-		Log.d(TAG, "++ CONNECT SPOKA ++");
+		Log.d(TAG, "++ CONNECT SERIAL ADAPTER ++");
 
 		_handler = handler;
 
@@ -70,10 +70,10 @@ public class Spoka {
 			// connection or an exception
 			_btSocket.connect();
 			// _btSocket.accept();
-			Log.d(TAG, "++ connectED SPOKA ++");
+			Log.d(TAG, "++ connectED SERIAL ADAPTER ++");
 		} catch (IOException e) {
 			disconnect();
-			Log.e(TAG, "Can't connect to the Spoka", e);
+			Log.e(TAG, "Can't connect to the SERIAL ADAPTER", e);
 			throw e;
 		}
 
@@ -123,7 +123,7 @@ public class Spoka {
 							}
 						}
 					} catch (Exception e) {
-						Log.e(TAG, "Can't read message from the Spoka", e);
+						Log.e(TAG, "Can't read message from the SERIAL ADAPTER", e);
 					}
 				}
 			}
@@ -149,7 +149,7 @@ public class Spoka {
 		 * byte red = checkPerc(redPerc); byte blue = checkPerc(bluePerc); byte
 		 * orange = checkPerc(orangePerc);
 		 * 
-		 * // 1. send the special char "#" indicating to the Spoka that we want
+		 * // 1. send the special char "#" indicating to the SERIAL ADAPTER that we want
 		 * to // manually update the colours sendBytes((byte) '#');
 		 * 
 		 * // 2. check that we receive back the "BRO " acknowledgement( Blue,
@@ -178,7 +178,7 @@ public class Spoka {
 				_socketOS.flush();
 			}
 		} catch (IOException e) {
-			Log.e(TAG, "Can't send message to the Spoka", e);
+			Log.e(TAG, "Can't send message to the SERIAL ADAPTER", e);
 		}
 	}
 
