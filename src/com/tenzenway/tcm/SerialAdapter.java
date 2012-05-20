@@ -31,7 +31,8 @@ public class SerialAdapter {
 	private BluetoothSocket _btSocket;
 	private InputStream _socketIS;
 	private OutputStream _socketOS;
-	private final Handler _handler;
+//	private final Handler _handler;
+	private DataLink _dataLink;
 
 	// will need to SYNCHRONISE on this as it's used from multiple threads !
 	private Queue<String> _incomingData = new ConcurrentLinkedQueue<String>();
@@ -42,7 +43,8 @@ public class SerialAdapter {
 			Handler handler) throws IOException {
 		Log.d(TAG, "++ CONNECT SERIAL ADAPTER ++");
 
-		_handler = handler;
+//		_handler = handler;
+		_dataLink = new DataLink(handler);
 
 		// Get the BluetoothDevice object
 		BluetoothDevice device = bluetoothAdapter.getRemoteDevice(address);
@@ -97,30 +99,34 @@ public class SerialAdapter {
 							// blocking on the read when there's nothing...
 							int readCount = _socketIS.read(buff);
 
-							_incomingDataStr.append(new String(buff, 0,
-									readCount));
-							if (_incomingDataStr.length() > Constant.PACKET_SIZE * 2) {
-								int syncByteIdx = 0;
-								for (int i = 0; i < Constant.PACKET_SIZE * 2; i++) {
-									if (_incomingDataStr.charAt(i) > 128) {
-										syncByteIdx = i;
-										break;
-									}
-								}
-								if (syncByteIdx != 0)
-									System.out.println("packet is not sync!");
-								CharSequence tmp = _incomingDataStr
-										.subSequence(syncByteIdx, syncByteIdx
-												+ Constant.PACKET_SIZE);
-//								for (int i = 0; i < tmp.length(); i++) {
-//									int j = tmp.charAt(i);
-//									System.out.println(j);
+							_dataLink.readMessage(buff, readCount);
+							
+							//System.arraycopy(buff, 0, msg, 0, readCount);
+							
+//							_incomingDataStr.append(new String(buff, 0,
+//									readCount));
+//							if (_incomingDataStr.length() > Constant.PACKET_SIZE * 2) {
+//								int syncByteIdx = 0;
+//								for (int i = 0; i < Constant.PACKET_SIZE * 2; i++) {
+//									if (_incomingDataStr.charAt(i) > 128) {
+//										syncByteIdx = i;
+//										break;
+//									}
 //								}
-								_incomingDataStr.delete(0, syncByteIdx
-										+ Constant.PACKET_SIZE);
-								_handler.obtainMessage(0, Constant.PACKET_SIZE, -1, tmp)
-										.sendToTarget();
-							}
+//								if (syncByteIdx != 0)
+//									System.out.println("packet is not sync!");
+//								CharSequence tmp = _incomingDataStr
+//										.subSequence(syncByteIdx, syncByteIdx
+//												+ Constant.PACKET_SIZE);
+////								for (int i = 0; i < tmp.length(); i++) {
+////									int j = tmp.charAt(i);
+////									System.out.println(j);
+////								}
+//								_incomingDataStr.delete(0, syncByteIdx
+//										+ Constant.PACKET_SIZE);
+//								_handler.obtainMessage(0, Constant.PACKET_SIZE, -1, tmp)
+//										.sendToTarget();
+//							}
 						}
 					} catch (Exception e) {
 						Log.e(TAG, "Can't read message from the SERIAL ADAPTER", e);
@@ -163,9 +169,9 @@ public class SerialAdapter {
 		return false;
 	}
 
-	private byte checkPerc(int perc) {
-		return (byte) (perc < 0 ? 0 : (perc > 100 ? 100 : perc));
-	}
+//	private byte checkPerc(int perc) {
+//		return (byte) (perc < 0 ? 0 : (perc > 100 ? 100 : perc));
+//	}
 
 	private void sendBytes(byte... bytes) {
 		try {
@@ -182,39 +188,39 @@ public class SerialAdapter {
 		}
 	}
 
-	private boolean waitForIncomingData(String expectedData, int timeoutMillis) {
-		final long startTime = System.currentTimeMillis();
-		byte[] buff = new byte[100];
-		String incomingData = "";
-		try {
-			if (_socketIS == null)
-				_socketIS = new BufferedInputStream(_btSocket.getInputStream(),
-						1024);
-
-			if (_socketIS != null) {
-				while ((!incomingData.contains(expectedData))
-						&& (System.currentTimeMillis() - startTime < timeoutMillis)) {
-					// blocking on the read when there's nothing...
-					int readCount = _socketIS.read(buff);
-					Log.e(TAG, "readCount:" + readCount);
-					// for some VERY SILLY reason, if we store the bytes here,
-					// they come garbled...
-					incomingData += new String(buff, 0, readCount);
-					Log.e(TAG, "incomingData" + incomingData);
-				}
-			}
-		} catch (IOException e) {
-			Log.e(TAG, "Can't receive incoming data", e);
-		}
-
-		Log.d(TAG, "RECV: " + incomingData);
-
-		if (incomingData.contains(expectedData)) {
-			return true;
-		}
-
-		return false;
-	}
+//	private boolean waitForIncomingData(String expectedData, int timeoutMillis) {
+//		final long startTime = System.currentTimeMillis();
+//		byte[] buff = new byte[100];
+//		String incomingData = "";
+//		try {
+//			if (_socketIS == null)
+//				_socketIS = new BufferedInputStream(_btSocket.getInputStream(),
+//						1024);
+//
+//			if (_socketIS != null) {
+//				while ((!incomingData.contains(expectedData))
+//						&& (System.currentTimeMillis() - startTime < timeoutMillis)) {
+//					// blocking on the read when there's nothing...
+//					int readCount = _socketIS.read(buff);
+//					Log.e(TAG, "readCount:" + readCount);
+//					// for some VERY SILLY reason, if we store the bytes here,
+//					// they come garbled...
+//					incomingData += new String(buff, 0, readCount);
+//					Log.e(TAG, "incomingData" + incomingData);
+//				}
+//			}
+//		} catch (IOException e) {
+//			Log.e(TAG, "Can't receive incoming data", e);
+//		}
+//
+//		Log.d(TAG, "RECV: " + incomingData);
+//
+//		if (incomingData.contains(expectedData)) {
+//			return true;
+//		}
+//
+//		return false;
+//	}
 
 	// private boolean waitForIncomingData(String expectedData, int
 	// timeoutMillis){

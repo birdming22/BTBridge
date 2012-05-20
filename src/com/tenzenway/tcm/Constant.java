@@ -6,4 +6,11 @@ public class Constant {
 	public static final int SENSING_LEVEL = 1024;
 	public static final int DOMAIN_BOUNDARY = SAMPLE_RATE * 4;
 	public static final int FFT_DATA_SIZE = 128;
+	
+	// for DataLink state machine
+	public static final int SYNC_STATE = 0;
+	public static final int SEQ_STATE = 1;
+	public static final int DATA_STATE = 2;
+	
+	public static final int DATA_SIZE = 8;
 }
