@@ -145,35 +145,35 @@ public class SerialAdapter {
 		}
 	}
 
-	public boolean updateColours(int redPerc, int bluePerc, int orangePerc) {
-		if (redPerc > bluePerc) {
-			sendBytes((byte) 'I');
-		} else {
-			sendBytes((byte) 'O');
-		}
-		/*
-		 * byte red = checkPerc(redPerc); byte blue = checkPerc(bluePerc); byte
-		 * orange = checkPerc(orangePerc);
-		 * 
-		 * // 1. send the special char "#" indicating to the SERIAL ADAPTER that we want
-		 * to // manually update the colours sendBytes((byte) '#');
-		 * 
-		 * // 2. check that we receive back the "BRO " acknowledgement( Blue,
-		 * Red, // Orange) // if(waitForIncomingData("BRO", 100)){ // 3. send
-		 * the values & the check sum sendBytes(blue, red, orange, (byte)
-		 * (((int) blue + (int) red + (int) orange) % 100));
-		 * 
-		 * // 4. check that we receive back confirmation // return
-		 * waitForIncomingData("OK", 100); // }
-		 */
-		return false;
-	}
+//	public boolean updateColours(int redPerc, int bluePerc, int orangePerc) {
+//		if (redPerc > bluePerc) {
+//			sendBytes((byte) 'I');
+//		} else {
+//			sendBytes((byte) 'O');
+//		}
+//		/*
+//		 * byte red = checkPerc(redPerc); byte blue = checkPerc(bluePerc); byte
+//		 * orange = checkPerc(orangePerc);
+//		 * 
+//		 * // 1. send the special char "#" indicating to the SERIAL ADAPTER that we want
+//		 * to // manually update the colours sendBytes((byte) '#');
+//		 * 
+//		 * // 2. check that we receive back the "BRO " acknowledgement( Blue,
+//		 * Red, // Orange) // if(waitForIncomingData("BRO", 100)){ // 3. send
+//		 * the values & the check sum sendBytes(blue, red, orange, (byte)
+//		 * (((int) blue + (int) red + (int) orange) % 100));
+//		 * 
+//		 * // 4. check that we receive back confirmation // return
+//		 * waitForIncomingData("OK", 100); // }
+//		 */
+//		return false;
+//	}
 
 //	private byte checkPerc(int perc) {
 //		return (byte) (perc < 0 ? 0 : (perc > 100 ? 100 : perc));
 //	}
 
-	private void sendBytes(byte... bytes) {
+	public void sendBytes(byte[] bytes) {
 		try {
 			if (_socketOS == null)
 				_socketOS = new BufferedOutputStream(

@@ -57,6 +57,22 @@ public class MainActivity extends Activity {
 	private int dataCount = 0;
 	private double[] dataArray = new double[Constant.FFT_DATA_SIZE];
 
+	public boolean updateColours(int redPerc, int bluePerc, int orangePerc) {
+		byte[] bytes = new byte[1];
+		
+		if (redPerc > bluePerc) {
+			bytes[0] = 'I';
+		} else {
+			bytes[0] = 'O';
+		}
+
+		if (_serialAdapter != null) {
+			_serialAdapter.sendBytes(bytes);
+		}
+		
+		return false;
+	}
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -72,14 +88,14 @@ public class MainActivity extends Activity {
 				.addJoystickListener(new JoystickListener() {
 					@Override
 					public void onMove(ColValues newColours) {
-						if (_serialAdapter != null) {
-							final String result = _serialAdapter.updateColours(
+//						if (_serialAdapter != null) {
+							final String result = updateColours(
 									newColours.red, newColours.blue,
 									newColours.orange) ? "OK" : "NOK";
 
 							Log.d(TAG, "Update Colours " + result + " ("
 									+ newColours + ")");
-						}
+//						}
 					}
 				});
 
