@@ -88,14 +88,12 @@ public class MainActivity extends Activity {
 				.addJoystickListener(new JoystickListener() {
 					@Override
 					public void onMove(ColValues newColours) {
-//						if (_serialAdapter != null) {
-							final String result = updateColours(
-									newColours.red, newColours.blue,
-									newColours.orange) ? "OK" : "NOK";
+						final String result = updateColours(
+								newColours.red, newColours.blue,
+								newColours.orange) ? "OK" : "NOK";
 
-							Log.d(TAG, "Update Colours " + result + " ("
-									+ newColours + ")");
-//						}
+						Log.d(TAG, "Update Colours " + result + " ("
+								+ newColours + ")");
 					}
 				});
 
@@ -216,29 +214,12 @@ public class MainActivity extends Activity {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case 0:
-//				// System.out.println(dataCount);
-//				CharSequence readBuf = (CharSequence) msg.obj;
-//				_inData = "";
-//				for (int i = 0; i < msg.arg1; i++) {
-//					int in = readBuf.charAt(i);
-//					// System.out.println(in);
-//					_inData = _inData + ", " + Integer.toString(in);
-//				}
-
 				int[] sensorData = (int[]) msg.obj;
 				
 				if (rollHistory.size() > Constant.DOMAIN_BOUNDARY) {
 					for (int i = 0; i < 8; i++)
 						rollHistory.removeFirst();
 				}
-//				for (int i = 1; i < 9; i++) {
-//					int b1 = (int) readBuf.charAt(i * 2);
-//					int b2 = (int) readBuf.charAt(i * 2 + 1);
-//					int value = b2 * 32 + b1;
-//					rollHistory.addLast(value);
-//					fftArray[dataCount + i - 1] = (double)value;
-//					dataArray[dataCount + i - 1] = (double)value;
-//				}
 				
 				for (int i=0; i< Constant.DATA_SIZE; i++) {
 					int value = sensorData[i];
