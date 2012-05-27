@@ -9,9 +9,17 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
     
+    <instrumentation 
+	    android:name="android.test.InstrumentationTestRunner"
+	    android:targetPackage="com.tenzenway.tcm"  
+		android:label="Test Sqlite">
+	</instrumentation>  
+    
     <application
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name" >
+        <!-- for android unit test  -->
+		<uses-library android:name="android.test.runner" />
         <activity
             android:label="@string/app_name"
             android:name=".MainActivity" >
@@ -25,6 +33,5 @@
             android:label="@string/app_name"
             android:name=".BTDeviceListActivity" >
         </activity>
-        </application>
-
+	</application>       
 </manifest>

@@ -13,4 +13,8 @@ public class Constant {
 	public static final int DATA_STATE = 2;
 	
 	public static final int DATA_SIZE = 8;
+	
+	// for DbAdapter
+	public static final String DB_NAME = "pressure";
+	public static final int DB_VERSION = 1;
 }
