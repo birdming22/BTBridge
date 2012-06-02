@@ -2,6 +2,8 @@ package com.tenzenway.tcm;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
+import java.util.Calendar;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -56,10 +58,24 @@ public class DbAdapter {
 		db.close();
 	}
 
+	private long _dateToLong(int year, int month, int day) {
+		Calendar cal = Calendar.getInstance();
+		String defaultTimeZone = "GMT+8:00";
+		cal.setTimeZone(TimeZone.getTimeZone(defaultTimeZone));
+		cal.set(year, month, day);
+		cal.clear(Calendar.MILLISECOND);
+		return cal.getTimeInMillis();
+	}
+	
+	public long dateToLong(int year, int month, int day) {
+		// for testing
+		return _dateToLong(year, month, day);
+	}
+	
 	public int addUser(String username, int year, int month, int day) {
 		ContentValues initialValues = new ContentValues();
 		initialValues.put("username", username);
-		initialValues.put("birthday", year);
+		initialValues.put("birthday", _dateToLong(year, month, day));
 		return (int) db.insert("user", null, initialValues);
 	}
 

@@ -1,5 +1,6 @@
 package com.tenzenway.tcm.test;
 
+import java.util.Calendar;
 import java.util.List;
 
 import android.test.AndroidTestCase;
@@ -75,6 +76,19 @@ public class TestDbAdapter extends AndroidTestCase {
 		
 		for(int i=0; i< 10; i++) {
 			testDelUser(i);
+		}
+	}
+	
+	public void testDateToLong() {
+		for(int i=0; i<10; i++) {
+			int year = 1977 + i;
+			int month = 7;
+			int day = 7;
+			long birthday = dbAdapter.dateToLong(year, month, day);
+			Calendar cal = Calendar.getInstance();
+			cal.set(year, month, day);
+			cal.clear(Calendar.MILLISECOND);
+			assertTrue(birthday == cal.getTimeInMillis());
 		}
 	}
 
