@@ -17,4 +17,12 @@ public class Constant {
 	// for DbAdapter
 	public static final String DB_NAME = "pressure";
 	public static final int DB_VERSION = 1;
+	
+	// for position
+	public static final int LEFT_UP = 1;
+	public static final int LEFT_MIDDLE = 2;
+	public static final int LEFT_DOWN = 3;
+	public static final int RIGHT_UP = 4;
+	public static final int RIGHT_MIDDLE = 5;
+	public static final int RIGHT_DOWN = 6;
 }

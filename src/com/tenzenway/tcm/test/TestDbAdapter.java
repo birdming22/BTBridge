@@ -92,4 +92,41 @@ public class TestDbAdapter extends AndroidTestCase {
 		}
 	}
 
+	public void testAddRecord() {
+		for(int i=0; i<10;i++) {
+			String username = "recUser" + i;
+			int userId = dbAdapter.addUser(username, 1977 + i, 7, 7);
+			assertTrue(userId > 0);
+			
+			int recId;
+			recId = dbAdapter.addRecord(userId, Constant.LEFT_UP);
+			assertTrue(recId > 0);
+			dbAdapter.addRecord(userId, Constant.LEFT_MIDDLE);
+			assertTrue(recId > 0);
+			dbAdapter.addRecord(userId, Constant.LEFT_DOWN);
+			assertTrue(recId > 0);
+			recId = dbAdapter.addRecord(userId, Constant.RIGHT_UP);
+			assertTrue(recId > 0);
+			dbAdapter.addRecord(userId, Constant.RIGHT_MIDDLE);
+			assertTrue(recId > 0);
+			dbAdapter.addRecord(userId, Constant.RIGHT_DOWN);
+			assertTrue(recId > 0);
+		}
+	}
+	
+	public void testAddData() {
+		String username = "dataUser";
+		int userId = dbAdapter.addUser(username, 1977, 7, 7);
+		assertTrue(userId > 0);
+		
+		int recId;
+		recId = dbAdapter.addRecord(userId, Constant.LEFT_UP);
+		assertTrue(recId > 0);
+		
+		for(int i=0; i<1024; i++) {
+			int dataId;
+			dataId = dbAdapter.addData(recId, i);
+			assertTrue(dataId > 0);
+		}
+	}
 }

@@ -22,7 +22,7 @@ public class DbAdapter {
 		private static final String sqlCreateUser = "create table user (id integer primary key autoincrement, "
 				+ "username text not null, " + "birthday long DEFAULT 0);";
 		private static final String sqlCreateTransaction = "create table record (id integer primary key autoincrement, "
-				+ "userId integer, " + "recTime long DEFAULT 0);";
+				+ "userId integer, " + "position integer, " + "recTime long DEFAULT 0);";
 		private static final String sqlCreateData = "create table data (id integer primary key autoincrement, "
 				+ "recId integer, " + "value integer);";
 
@@ -171,5 +171,28 @@ public class DbAdapter {
 	public void truncateUser() {
 		db.execSQL("delete from user;");
 		db.execSQL("delete from sqlite_sequence where name='user';");
+	}
+	
+	private long _getCurrentTime() {
+		Calendar cal = Calendar.getInstance();
+		String defaultTimeZone = "GMT+8:00";
+		cal.setTimeZone(TimeZone.getTimeZone(defaultTimeZone));
+		cal.clear(Calendar.MILLISECOND);
+		return cal.getTimeInMillis();
+	}
+	
+	public int addRecord(int userId, int position) {
+		ContentValues initialValues = new ContentValues();
+		initialValues.put("userId", userId);
+		initialValues.put("position", position);
+		initialValues.put("recTime", _getCurrentTime());
+		return (int) db.insert("record", null, initialValues);
+	}
+	
+	public int addData(int recId, int value) {
+		ContentValues initialValues = new ContentValues();
+		initialValues.put("recId", recId);
+		initialValues.put("value", value);
+		return (int) db.insert("data", null, initialValues);
 	}
 }
