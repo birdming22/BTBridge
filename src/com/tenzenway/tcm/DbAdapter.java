@@ -1,5 +1,10 @@
 package com.tenzenway.tcm;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TimeZone;
@@ -40,10 +45,41 @@ public class DbAdapter {
 			db.execSQL(sqlCreateData);
 		}
 
+		private void _backupOldDb(int oldVersion) {
+			final String IN_FILE = Constant.DB_PATH + Constant.DB_NAME;
+			final String OUT_FILE = Constant.DB_PATH + Constant.DB_NAME + "." + Integer.toString(oldVersion) + ".bak";
+			if(new File(Constant.DB_PATH + Constant.DB_NAME).exists()) {
+				File f = new File(Constant.DB_PATH);
+				if (!f.exists()) {
+					f.mkdir();
+				}
+				try {
+					InputStream is = new FileInputStream(IN_FILE);
+					OutputStream os = new FileOutputStream(OUT_FILE);
+
+					byte[] buffer = new byte[1024];
+					int length;
+					while ((length = is.read(buffer)) > 0) {
+						os.write(buffer, 0, length);
+					}
+					os.flush();
+					os.close();
+					is.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-			// TODO Auto-generated method stub
-
+			Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
+                    + newVersion + ", which will destroy all old data");
+			_backupOldDb(oldVersion);
+            db.execSQL("DROP TABLE IF EXISTS user");
+            db.execSQL("DROP TABLE IF EXISTS record");
+            db.execSQL("DROP TABLE IF EXISTS data");
+            onCreate(db);
 		}
 
 	}
