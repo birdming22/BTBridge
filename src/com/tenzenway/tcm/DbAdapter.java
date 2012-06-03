@@ -113,6 +113,7 @@ public class DbAdapter {
 		Cursor cursor = _fetchUserById(userId);
 		if (cursor != null) {
 			cursor.moveToFirst();
+			user.id = userId;
 			user.username = cursor.getString(cursor.getColumnIndex("username"));
 			user.birthday = cursor.getLong(cursor.getColumnIndex("birthday"));
 		} else {
