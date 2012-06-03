@@ -195,4 +195,13 @@ public class DbAdapter {
 		initialValues.put("value", value);
 		return (int) db.insert("data", null, initialValues);
 	}
+	
+	public void beginTransaction() {
+		db.beginTransaction();
+	}
+	
+	public void endTransaction() {
+		db.setTransactionSuccessful();
+		db.endTransaction();
+	}
 }

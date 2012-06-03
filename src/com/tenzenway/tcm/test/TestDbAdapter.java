@@ -3,6 +3,7 @@ package com.tenzenway.tcm.test;
 import java.util.Calendar;
 import java.util.List;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
 import android.util.Log;
 
@@ -128,5 +129,23 @@ public class TestDbAdapter extends AndroidTestCase {
 			dataId = dbAdapter.addData(recId, i);
 			assertTrue(dataId > 0);
 		}
+	}
+	
+	public void testBatchAddData() {
+		String username = "batchDataUser";
+		int userId = dbAdapter.addUser(username, 1977, 7, 7);
+		assertTrue(userId > 0);
+		
+		int recId;
+		recId = dbAdapter.addRecord(userId, Constant.LEFT_UP);
+		assertTrue(recId > 0);
+		
+		dbAdapter.beginTransaction();
+		for(int i=0; i<1024; i++) {
+			int dataId;
+			dataId = dbAdapter.addData(recId, i);
+			assertTrue(dataId > 0);
+		}
+		dbAdapter.endTransaction();
 	}
 }
