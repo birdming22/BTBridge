@@ -56,6 +56,7 @@ public class MainActivity extends Activity {
 	private double[] fftArray = new double[Constant.FFT_DATA_SIZE * 2];
 	private int dataCount = 0;
 	private double[] dataArray = new double[Constant.FFT_DATA_SIZE];
+	private UserHelper userHelper;
 
 	public boolean updateColours(int redPerc, int bluePerc, int orangePerc) {
 		byte[] bytes = new byte[1];
@@ -153,6 +154,7 @@ public class MainActivity extends Activity {
 		aprFrequencyPlot.getRangeLabelWidget().pack();
 		aprFrequencyPlot.disableAllMarkup();
 
+		userHelper = new UserHelper(this);
 	}
 
 	@Override
@@ -297,6 +299,7 @@ public class MainActivity extends Activity {
 
 					_serialAdapter = new SerialAdapter(_bluetoothAdapter, address, _handler);
 					_connectDevice = true;
+					userHelper.setSerialAdapter(_serialAdapter);
 				} catch (Exception e) {
 					Toast.makeText(this, "Can't connect to the SPOKA",
 							Toast.LENGTH_SHORT).show();

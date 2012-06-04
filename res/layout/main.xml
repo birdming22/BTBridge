@@ -4,6 +4,62 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+    <LinearLayout
+        android:id="@+id/mainPage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <Spinner
+            android:id="@+id/userSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/leftUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="左寸" />
+
+        <Button
+            android:id="@+id/leftMiddle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="左關" />
+
+        <Button
+            android:id="@+id/leftDown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="左尺" />
+
+        <Button
+            android:id="@+id/rightUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="右寸" />
+
+        <Button
+            android:id="@+id/rightMiddle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="右關" />
+
+        <Button
+            android:id="@+id/rightDown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="右尺" />
+
+        <Button
+            android:id="@+id/turnOff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="關閉" />
+
+        
+    </LinearLayout>
+
     <FrameLayout
         android:id="@+id/drawingFrame"
         android:layout_width="match_parent"
@@ -22,6 +78,7 @@
             android:layout_marginRight="10px"
             android:layout_marginTop="100px"
             title="Time" />
+
         <com.androidplot.xy.XYPlot
             android:id="@+id/aprFrequencyPlot"
             android:layout_width="fill_parent"
@@ -30,7 +87,7 @@
             android:layout_marginRight="10px"
             android:layout_marginTop="410px"
             title="Frquency" />
-        </FrameLayout>
+    </FrameLayout>
 
     <EditText
         android:id="@+id/editDebug"

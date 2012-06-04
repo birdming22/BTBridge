@@ -218,7 +218,7 @@ public class DbAdapter {
 		return cal.getTimeInMillis();
 	}
 	
-	public int addRecord(int userId, int position) {
+	public int addRecord(long userId, int position) {
 		ContentValues initialValues = new ContentValues();
 		initialValues.put("userId", userId);
 		initialValues.put("position", position);
@@ -226,7 +226,7 @@ public class DbAdapter {
 		return (int) db.insert("record", null, initialValues);
 	}
 	
-	public int addData(int recId, int value) {
+	public int addData(long recId, int value) {
 		ContentValues initialValues = new ContentValues();
 		initialValues.put("recId", recId);
 		initialValues.put("value", value);
