@@ -22,6 +22,7 @@ public class DbAdapter {
 	// Debugging
 	private static final String TAG = "DB_ADAPTER";
 	private SQLiteDatabase db;
+	private boolean isBeginTransaction = false;
 
 	private static class SQLiteHelper extends SQLiteOpenHelper {
 		private static final String sqlCreateUser = "create table user (id integer primary key autoincrement, "
@@ -235,10 +236,39 @@ public class DbAdapter {
 	
 	public void beginTransaction() {
 		db.beginTransaction();
+		isBeginTransaction = true;
 	}
 	
 	public void endTransaction() {
-		db.setTransactionSuccessful();
-		db.endTransaction();
+		if (isBeginTransaction) {
+			db.setTransactionSuccessful();
+			db.endTransaction();
+		}
+	}
+
+	public void exportDb() {
+		final String IN_FILE = Constant.DB_PATH + Constant.DB_NAME;
+		final String OUT_FILE = Constant.DROPBPX_PATH + Constant.DB_NAME;
+		if(new File(Constant.DB_PATH + Constant.DB_NAME).exists()) {
+			File f = new File(Constant.DROPBPX_PATH);
+			if (!f.exists()) {
+				f.mkdirs();
+			}
+			try {
+				InputStream is = new FileInputStream(IN_FILE);
+				OutputStream os = new FileOutputStream(OUT_FILE);
+
+				byte[] buffer = new byte[1024];
+				int length;
+				while ((length = is.read(buffer)) > 0) {
+					os.write(buffer, 0, length);
+				}
+				os.flush();
+				os.close();
+				is.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }

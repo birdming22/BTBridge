@@ -57,6 +57,11 @@
             android:layout_height="wrap_content"
             android:text="關閉" />
 
+        <Button
+            android:id="@+id/export"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="匯出" />
         
     </LinearLayout>
 

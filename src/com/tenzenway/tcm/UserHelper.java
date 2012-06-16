@@ -31,6 +31,7 @@ public class UserHelper {
 	private Button btnRightMiddle;
 	private Button btnRightDown;
 	private Button btnTurnOff;
+	private Button btnExport;
 
 	public UserHelper(final Activity activity) {
 		this.activity = activity;
@@ -108,7 +109,9 @@ public class UserHelper {
 		isCapturing = false;
 		byte[] bytes = new byte[1];
 		bytes[0] = 'O';
-		serialAdapter.sendBytes(bytes);
+		if (serialAdapter != null) {
+			serialAdapter.sendBytes(bytes);
+		}
 		currentPosition = 0;
 		currentRecId = 0;
 		dbAdapter.endTransaction();
@@ -156,6 +159,14 @@ public class UserHelper {
 		btnTurnOff.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				_stopCapturing();
+			}
+		});
+
+		btnExport = (Button) activity.findViewById(R.id.export);
+		btnExport.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				_stopCapturing();
+				dbAdapter.exportDb();
 			}
 		});
 	}

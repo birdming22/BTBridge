@@ -250,26 +250,26 @@ public class MainActivity extends Activity {
 //					FFT.complexForward(fftArray);
 //					FFT.realForwardFull(fftArray);
 					
-					double[] magArray = forwardMagnitude(dataArray);
-					int size = rollFrequency.size();
-					for (int i = 0; i < size; i++) {
-						rollFrequency.removeFirst();
-					}
-					for(int i=0;i<8;i++)
-						System.out.println("" + fftArray[i]);
-//						System.out.println("" + magArray[i]);
-					for (int i = 0; i < Constant.FFT_DATA_SIZE; i++) {
+//					double[] magArray = forwardMagnitude(dataArray);
+//					int size = rollFrequency.size();
+//					for (int i = 0; i < size; i++) {
+//						rollFrequency.removeFirst();
+//					}
+//					for(int i=0;i<8;i++)
 //						System.out.println("" + fftArray[i]);
-//						rollFrequency.addLast(Math.sqrt((fftArray[i * 2]
-//								* fftArray[i * 2] + fftArray[i * 2 + 1]
-//								* fftArray[i * 2 + 1])));
-						 rollFrequency.addLast(magArray[i]);
-//							System.out.println("" + magArray[i]);
-//						 rollFrequency.addLast(Math.abs(fftArray[i*2]));
-					}
-					rollFrequencySeries.setModel(rollFrequency,
-							SimpleXYSeries.ArrayFormat.Y_VALS_ONLY);
-					aprFrequencyPlot.redraw();
+////						System.out.println("" + magArray[i]);
+//					for (int i = 0; i < Constant.FFT_DATA_SIZE; i++) {
+////						System.out.println("" + fftArray[i]);
+////						rollFrequency.addLast(Math.sqrt((fftArray[i * 2]
+////								* fftArray[i * 2] + fftArray[i * 2 + 1]
+////								* fftArray[i * 2 + 1])));
+//						 rollFrequency.addLast(magArray[i]);
+////							System.out.println("" + magArray[i]);
+////						 rollFrequency.addLast(Math.abs(fftArray[i*2]));
+//					}
+//					rollFrequencySeries.setModel(rollFrequency,
+//							SimpleXYSeries.ArrayFormat.Y_VALS_ONLY);
+//					aprFrequencyPlot.redraw();
 					for(int i=0; i< fftArray.length; i++)
 						fftArray[i]=0;
 				}

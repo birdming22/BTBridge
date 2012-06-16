@@ -18,6 +18,7 @@ public class Constant {
 	public static final String DB_NAME = "pressure";
 	public static final int DB_VERSION = 1;
 	public static final String DB_PATH = "/data/data/com.tenzenway.tcm/databases/";
+	public static final String DROPBPX_PATH = "/sdcard/dropbox/tenzenway/com.tenzenway.tcm/";
 
 	// for position
 	public static final int LEFT_UP = 1;
