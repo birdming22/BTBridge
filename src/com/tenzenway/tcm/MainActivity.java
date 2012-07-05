@@ -218,6 +218,9 @@ public class MainActivity extends Activity {
 			case 0:
 				int[] sensorData = (int[]) msg.obj;
 				
+				// anrdoid will hang if write sensor data to db
+				// userHelper.handleMessage(sensorData);
+				
 				if (rollHistory.size() > Constant.DOMAIN_BOUNDARY) {
 					for (int i = 0; i < 8; i++)
 						rollHistory.removeFirst();

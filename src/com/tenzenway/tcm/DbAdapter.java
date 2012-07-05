@@ -243,6 +243,7 @@ public class DbAdapter {
 		if (isBeginTransaction) {
 			db.setTransactionSuccessful();
 			db.endTransaction();
+			isBeginTransaction = false;
 		}
 	}
 

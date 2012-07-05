@@ -43,7 +43,9 @@ public class DataLink {
 				state = Constant.SYNC_STATE;
 				dataCount = 0;
 				for (int i=0; i<Constant.DATA_SIZE; i++) {
-					sensorData[i] = 1023 - buff[i * 2 + 1] * 32 - buff[i * 2];
+					//sensorData[i] = 1023 - buff[i * 2 + 1] * 32 - buff[i * 2];
+					// this is for whyang's pcb
+					sensorData[i] = buff[i * 2 + 1] * 32 + buff[i * 2];
 				}
 				_handler.obtainMessage(0, Constant.DATA_SIZE, -1, sensorData)
 				.sendToTarget();
