@@ -31,7 +31,7 @@ public class SerialAdapter {
 	private BluetoothSocket _btSocket;
 	private InputStream _socketIS;
 	private OutputStream _socketOS;
-	private DataLink _dataLink;
+	private Handler _handler;
 
 	// will need to SYNCHRONISE on this as it's used from multiple threads !
 	private Queue<String> _incomingData = new ConcurrentLinkedQueue<String>();
@@ -42,7 +42,7 @@ public class SerialAdapter {
 			Handler handler) throws IOException {
 		Log.d(TAG, "++ CONNECT SERIAL ADAPTER ++");
 
-		_dataLink = new DataLink(handler);
+		_handler = handler;
 
 		// Get the BluetoothDevice object
 		BluetoothDevice device = bluetoothAdapter.getRemoteDevice(address);
@@ -97,7 +97,8 @@ public class SerialAdapter {
 							// blocking on the read when there's nothing...
 							int readCount = _socketIS.read(buff);
 
-							_dataLink.readMessage(buff, readCount);
+							_handler.obtainMessage(0, readCount, -1, buff)
+							.sendToTarget();
 						}
 					} catch (Exception e) {
 						Log.e(TAG, "Can't read message from the SERIAL ADAPTER", e);

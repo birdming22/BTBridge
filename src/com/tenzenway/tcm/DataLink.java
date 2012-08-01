@@ -47,7 +47,7 @@ public class DataLink {
 					// this is for whyang's pcb
 					sensorData[i] = buff[i * 2 + 1] * 32 + buff[i * 2];
 				}
-				_handler.obtainMessage(0, Constant.DATA_SIZE, -1, sensorData)
+				_handler.obtainMessage(1, Constant.DATA_SIZE, -1, sensorData)
 				.sendToTarget();
 			}
 		}

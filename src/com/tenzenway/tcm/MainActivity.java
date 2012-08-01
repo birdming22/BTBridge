@@ -57,6 +57,7 @@ public class MainActivity extends Activity {
 	private int dataCount = 0;
 	private double[] dataArray = new double[Constant.FFT_DATA_SIZE];
 	private UserHelper userHelper;
+	private DataLink dataLink;
 
 	public boolean updateColours(int redPerc, int bluePerc, int orangePerc) {
 		byte[] bytes = new byte[1];
@@ -155,6 +156,7 @@ public class MainActivity extends Activity {
 		aprFrequencyPlot.disableAllMarkup();
 
 		userHelper = new UserHelper(this);
+		dataLink = new DataLink(_handler);
 	}
 
 	@Override
@@ -216,6 +218,10 @@ public class MainActivity extends Activity {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case 0:
+				dataLink.readMessage((byte[])msg.obj, msg.arg1);
+				break;
+
+			case 1:
 				int[] sensorData = (int[]) msg.obj;
 				
 				// anrdoid will hang if write sensor data to db
