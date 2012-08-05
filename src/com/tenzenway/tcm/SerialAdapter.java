@@ -93,6 +93,11 @@ public class SerialAdapter {
 							// _socketIS = new BufferedInputStream(
 							// _btSocket.getInputStream(), 1024);
 							_socketIS = _btSocket.getInputStream();
+							
+							// stop capturing sensor data
+							byte[] bytes = new byte[1];
+							bytes[0] = 'O';
+							sendBytes(bytes);
 						} else {
 							// blocking on the read when there's nothing...
 							int readCount = _socketIS.read(buff);

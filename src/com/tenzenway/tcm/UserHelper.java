@@ -18,6 +18,7 @@ public class UserHelper {
 	private static final String TAG = "UserHelper";
 	private Activity activity;
 	private SerialAdapter serialAdapter;
+	private FileAdapter fileAdapter;
 	private Spinner userSpinner;
 	private DbAdapter dbAdapter;
 	private long currentUserId = 0;
@@ -36,6 +37,7 @@ public class UserHelper {
 	public UserHelper(final Activity activity) {
 		this.activity = activity;
 		dbAdapter = new DbAdapter(activity);
+		fileAdapter = new FileAdapter();
 		_loadUser();
 		_configButton();
 	}
@@ -78,16 +80,13 @@ public class UserHelper {
 
 	}
 	
-	private void _startCapturing(int newPosition) {
+	private int _startCapturing(int newPosition) {
 		if(isCapturing) {
 			if (newPosition != currentPosition) {
 				dbAdapter.endTransaction();
-				
-				currentPosition = newPosition;
-				dbAdapter.beginTransaction();
-				currentRecId = dbAdapter.addRecord(currentUserId, currentPosition);
 			} else {
 				Toast.makeText(activity, "Already Capturing!", Toast.LENGTH_LONG).show();
+				return 1;
 			}
 		} else {
 			if (serialAdapter != null) {
@@ -96,13 +95,20 @@ public class UserHelper {
 				serialAdapter.sendBytes(bytes);
 
 				isCapturing = true;
-				currentPosition = newPosition;
-				dbAdapter.beginTransaction();
-				currentRecId = dbAdapter.addRecord(currentUserId, currentPosition);
 			} else {
 				Log.w(TAG, "no serial adapter!");
+				return 1;
 			}
 		}
+		
+		currentPosition = newPosition;
+		dbAdapter.beginTransaction();
+		currentRecId = dbAdapter.addRecord(currentUserId, currentPosition);
+		if(fileAdapter.newRecFile(currentRecId)) {
+			Log.w(TAG, "rec file already exist");
+		}
+
+		return 0;
 	}
 	
 	private void _stopCapturing() {
@@ -179,5 +185,9 @@ public class UserHelper {
 		for (int i=0; i< Constant.DATA_SIZE; i++) {
 			dbAdapter.addData(currentRecId, sensorData[i]);
 		}
+	}
+	
+	void saveData(byte[] msg, int msgSize) {
+		fileAdapter.write(msg, msgSize);
 	}
 }

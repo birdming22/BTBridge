@@ -218,6 +218,7 @@ public class MainActivity extends Activity {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case 0:
+				userHelper.saveData((byte[])msg.obj, msg.arg1);
 				dataLink.readMessage((byte[])msg.obj, msg.arg1);
 				break;
 
