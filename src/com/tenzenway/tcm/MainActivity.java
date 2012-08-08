@@ -1,6 +1,7 @@
 package com.tenzenway.tcm;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.LinkedList;
 import android.graphics.Color;
 
@@ -218,8 +219,15 @@ public class MainActivity extends Activity {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case 0:
-				userHelper.saveData((byte[])msg.obj, msg.arg1);
-				dataLink.readMessage((byte[])msg.obj, msg.arg1);
+				ByteBuffer dBuf = (ByteBuffer)msg.obj;
+				int msgSize = msg.arg1;
+//				byte[] buf = new byte[msgSize];
+				dBuf.flip();
+//				dBuf.get(buf);
+				byte[] buf = dBuf.array();
+				userHelper.saveData(buf, msgSize);
+				dataLink.readMessage(buf, msgSize);
+				dBuf.clear();
 				break;
 
 			case 1:

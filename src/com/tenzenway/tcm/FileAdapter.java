@@ -1,6 +1,8 @@
 package com.tenzenway.tcm;
 
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.ByteBuffer;
 
 public class FileAdapter {
 	private FileOutputStream recFile = null;
@@ -11,10 +13,18 @@ public class FileAdapter {
 	
 	public boolean newRecFile(long recId) {
 		String filename = Constant.DROPBPX_PATH + String.valueOf(recId) + ".dat";
+		
+		System.out.println("filename:" + filename);
+		
 		try {
+			if (recFile != null) {
+				recFile.close();
+			}
 			recFile = new FileOutputStream(filename);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
+			System.out.println("recId: " + recId);
+			return false;
 		}
 		
 		return true;
@@ -30,4 +40,14 @@ public class FileAdapter {
 		}
 	}
 
+	public void close() {
+		try {
+			if (recFile != null) {
+				recFile.close();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		recFile = null;
+	}
 }

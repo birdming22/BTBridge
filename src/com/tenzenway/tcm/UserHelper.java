@@ -1,5 +1,6 @@
 package com.tenzenway.tcm;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -104,7 +105,7 @@ public class UserHelper {
 		currentPosition = newPosition;
 		dbAdapter.beginTransaction();
 		currentRecId = dbAdapter.addRecord(currentUserId, currentPosition);
-		if(fileAdapter.newRecFile(currentRecId)) {
+		if(!fileAdapter.newRecFile(currentRecId)) {
 			Log.w(TAG, "rec file already exist");
 		}
 
@@ -121,6 +122,7 @@ public class UserHelper {
 		currentPosition = 0;
 		currentRecId = 0;
 		dbAdapter.endTransaction();
+		fileAdapter.close();
 	}
 
 	private void _configButton() {

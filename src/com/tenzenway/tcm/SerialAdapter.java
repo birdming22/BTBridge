@@ -5,6 +5,7 @@ import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.ByteBuffer;
 import java.util.Queue;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -37,6 +38,7 @@ public class SerialAdapter {
 	private Queue<String> _incomingData = new ConcurrentLinkedQueue<String>();
 	private StringBuffer _incomingDataStr = new StringBuffer();
 	private char _sequence = 0;
+	private ByteBuffer dBuf = ByteBuffer.allocate(1024);
 
 	public SerialAdapter(BluetoothAdapter bluetoothAdapter, String address,
 			Handler handler) throws IOException {
@@ -87,6 +89,7 @@ public class SerialAdapter {
 			@Override
 			public void run() {
 				byte[] buff = new byte[1024];
+				int totalBytes = 0;
 				while (true) {
 					try {
 						if (_socketIS == null) {
@@ -98,12 +101,25 @@ public class SerialAdapter {
 							byte[] bytes = new byte[1];
 							bytes[0] = 'O';
 							sendBytes(bytes);
+							
+							dBuf.clear();
+							_socketIS.read(buff);
+							totalBytes = 0;
 						} else {
 							// blocking on the read when there's nothing...
 							int readCount = _socketIS.read(buff);
 
-							_handler.obtainMessage(0, readCount, -1, buff)
-							.sendToTarget();
+							if (readCount != -1) {
+								dBuf.put(buff, 0, readCount);
+								totalBytes += readCount;
+								if (totalBytes > Constant.PACKET_SIZE) {
+									_handler.obtainMessage(0, totalBytes, 0, dBuf)
+									.sendToTarget();
+									totalBytes = 0;
+								}
+							} else {
+								Log.d(TAG, "readCount == -1");
+							}
 						}
 					} catch (Exception e) {
 						Log.e(TAG, "Can't read message from the SERIAL ADAPTER", e);
